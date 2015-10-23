@@ -1,46 +1,43 @@
+import cfg from "./config";
+
+var scale = cfg.depthScale;
+var r = cfg.r;
+var strokeStyle = cfg.lineStrokeStyle;
+var fillStyle = cfg.circleFillStyle;
+
 class TreeNode {
-    radius= 2;
-    depthScale= 30;
     constructor(arg) {
-        this.left = null;
         this.right = null;
+        this.left = null;
         this.key = arg.key;
-        this.parent = null;
+        this.width = 0;
+        this.parent = arg.parent || null;
         this.depth = arg.depth;
-        this.width = 1;
     }
-    insert = function (treeNode) {
-        if (treeNode.key < this.key) {
+    insert(key) {
+        if (key < this.key) {
             if (this.left) {
-                this.left.insert(treeNode);
+                this.left.insert(key);
                 this.width ++;
             } else {
-                this.left = treeNode;
-                this.left.parent = this;
-                this.left.depth = this.depth + 1;
+                this.left = new TreeNode({key: key, depth: this.depth + 1, parent: this});
                 return 1;
-                //this.left._updateWidth();
             }
         } else {
             if (this.right) {
-                this.right.insert(treeNode);
+                this.right.insert(key);
                 this.width ++;
             } else {
-                this.right = treeNode;
-                this.right.parent = this;
-                this.right.depth = this.depth + 1;
+                this.right = new TreeNode({key: key, depth: this.depth + 1, parent: this});
                 return 1;
-                //this.right._updateWidth();
             }
         }
     }
-    printRecurse = function(start, end,  parentX, parentY, ctx) {
+    printRecurse(start, end,  parentX, parentY, ctx) {
         var mid = (end + start) / 2;
-        //console.log(start);
-        //console.log(end);
-        this._drawCircle(mid, this.depthScale * this.depth, this.radius, ctx);
-        this._drawLine(mid, this.depthScale * this.depth - this.radius, parentX, parentY + this.radius, ctx);
-        //this._drawBound(start, end, ctx);
+        var x = this._isLeftChild() ? mid + 2 : mid -2;
+        this._drawCircle(x, scale * this.depth, r, ctx);
+        this._drawLine(x, scale * this.depth - r, parentX, parentY + r, ctx);
         var leftWidth = 0;
         var rightWidth = 0;
         if (this.left) {
@@ -51,44 +48,45 @@ class TreeNode {
         }
         var leftMaxWidth = (end - start) * (leftWidth)/ (leftWidth + rightWidth);
         if (this.left) {
-            this.left.printRecurse(start, start + leftMaxWidth, mid,  this.depthScale * this.depth, ctx)
+            this.left.printRecurse(start, start + leftMaxWidth, mid,  scale * this.depth, ctx)
         }
         if (this.right) {
-            this.right.printRecurse(start + leftMaxWidth, end,  mid,  this.depthScale * this.depth, ctx)
+            this.right.printRecurse(start + leftMaxWidth, end,  mid,  scale * this.depth, ctx)
         }
     }
-    _drawBound = function(start, end, ctx) {
+    _drawBound(start, end, ctx) {
+        ctx.strokeStyle = strokeStyle;
         ctx.beginPath();
         ctx.lineWidth = 3;
-        ctx.moveTo(start, this.depth * this.depthScale - 10);
-        ctx.lineTo(start, this.depth * this.depthScale + 10);
+        ctx.moveTo(start, this.depth * scale - 10);
+        ctx.lineTo(start, this.depth * scale + 10);
         ctx.stroke();
         ctx.beginPath();
         ctx.lineWidth = 3;
-        ctx.moveTo(end, this.depth * this.depthScale - 10);
-        ctx.lineTo(end, this.depth * this.depthScale + 10);
+        ctx.moveTo(end, this.depth * scale - 10);
+        ctx.lineTo(end, this.depth * scale + 10);
         ctx.stroke();
-        ctx.lineWidth = 1;
     }
-    _isLeftChild = function () {
+    _isLeftChild() {
         if (!this.parent) return true;  // root
         return this == this.parent.left;
-    },
-    _drawCircle = function (x, y, r, ctx) {
+    }
+    _drawCircle(x, y, r, ctx) {
+        ctx.lineWidth = 1;
+        ctx.fillStyle = fillStyle;
         ctx.beginPath();
         ctx.arc(x, y, r, 0, 2 * Math.PI);
-        ctx.stroke();
         ctx.fill();
-        // ctx.fillText(this.width, x, y);
-    },
-    _drawLine = function (x1, y1, x2, y2, ctx) {
+    }
+    _drawLine(x1, y1, x2, y2, ctx) {
+        ctx.lineWidth = 0.5;
+        ctx.strokeStyle = strokeStyle;
         ctx.beginPath();
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
-        ctx.strokeWidth = 1;
         ctx.stroke();
-    },
-    _updateWidth = function() {
+    }
+    _updateWidth() {
         if (!this.parent) return;
         if (this._isLeftChild() && this.parent._isLeftChild()) {
             this.parent.width += 1;
@@ -97,10 +95,10 @@ class TreeNode {
         }
         if (this.parent)  this.parent._updateWidth();
     }
-    _addWidth = function(unit) {
+    _addWidth(unit) {
         this.width += unit;
         if (this.parent) this.parent._addWidth(unit);
     }
 }
 
-export TreeNode;
+export default TreeNode;

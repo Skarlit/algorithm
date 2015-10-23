@@ -1,3 +1,5 @@
+import TreeNode from "./node";
+
 class Tree {
     constructor() {
         this.root = new TreeNode({
@@ -6,15 +8,12 @@ class Tree {
             depth: 1
         })
     }
-    inser(treeNode) {
+    insert(treeNode) {
         this.root.insert(treeNode);
     }
     print(width, ctx) {
-        this.root.printRecurse(0, width, 500, 10, ctx)
+        this.root.printRecurse(0, width, width / 2, 10, ctx)
     }
 }
 
-function Tree() {
-
-}
-
+export default Tree;
