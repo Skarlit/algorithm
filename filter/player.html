@@ -3,10 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Player</title>
+    <script type="shader" id="vs">
+        varying vec2 vpos;
+        void main() {
+            gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+            vpos = vec2(gl_Position);
+        }
+    </script>
+    <script type="shader" id="fs">
+        varying vec2 vpos;
+
+        vec2 offset = vec2(1.0, 1.0);
+        vec2 scale = vec2(0.5, 0.5);
+        float d = 0.001;
+        uniform sampler2D frameTexture;
+
+
+
+        void main() {
+            vec2 texPos = scale*(vpos + offset);
+            gl_FragColor = (texture2D(frameTexture, texPos) +
+                  texture2D(frameTexture, texPos + vec2(d, 0)) +
+                  texture2D(frameTexture, texPos + vec2(0, d)) +
+                  texture2D(frameTexture, texPos + vec2(-d, 0)) +
+                  texture2D(frameTexture, texPos + vec2(0, -d))) / 5.0;
+        }
+    </script>
     <script src="../../../build/vendors.js"></script>
     <script src="../../../build/player.js"></script>
 </head>
 <body>
-
+d
 </body>
 </html>
