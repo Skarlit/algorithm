@@ -2,18 +2,28 @@ import React from "react";
 import THREE from "three";
 
 class Player {
-    constructor() {
-        this.videoSource = document.createElement('video');
-        this.videoSource.src ="./test/test.mp4";
-        this.videoSource.autoplay = false;
-        this.texture = new THREE.Texture(this.videoSource);
-        this.texture.minFilter = THREE.NearestFilter;
-        this.texture.magFilter = THREE.NearestFilter;
+    constructor(inputSrceen, outputScreen) {
+        this.inputSrceen = inputSrceen;
+        this.inputSrceen.autoplay = false;
+        this.inputSrceen.controls = true;
+        this.outputScreen = outputScreen;
+        this.frameTexture = new THREE.Texture(this.inputSrceen);
+        this.frameTexture.minFilter = THREE.NearestFilter;
+        this.frameTexture.magFilter = THREE.NearestFilter;
         this.scene = new THREE.Scene();
+        this.renderer = new THREE.WebGLRenderer({canvas: this.outputScreen, antialias: true});
     }
-    initScreen(canvas, width, height) {
-        this.width = width;
-        this.height = height;
+    play(url) {
+        this.inputSrceen.src = url;
+        this.inputSrceen.addEventListener('canplay', function(e) {
+            this._initScreen(e.target.videoWidth, e.target.videoHeight);
+            this._render();
+        }.bind(this));
+    }
+    pause() {
+        window.cancelRequestAnimationFrame(this.loopId);
+    }
+    _initScreen(width, height) {
         var left = width / -2,
             right = width / 2,
             top = height / 2,
@@ -22,29 +32,9 @@ class Player {
             far = 1000;
         var topRightX = (right - left) / 2,
             topRightY = (top - bottom) / 2;
-        this.videoSource.width = width;
-        this.videoSource.height = height;
-        document.body.appendChild(this.videoSource);
-        this.videoSource.controls = true;
         this._initScreenMesh(topRightX, topRightY);
-        this._initLighting();
         this.camera = new THREE.OrthographicCamera(left, right, top, bottom, near, far);
         this.camera.position.z = 1000;
-
-        this.renderer = new THREE.WebGLRenderer({
-            canvas: canvas
-        });
-    }
-    play() {
-        this.videoSource.play();
-        this._render();
-    }
-    pause() {
-        window.cancelRequestAnimationFrame(this.loopId);
-    }
-    _initLighting() {
-        var light = new THREE.AmbientLight( 0xffffff );
-        this.scene.add( light );
     }
     _initScreenMesh(x, y) {
         var geometry = new THREE.BufferGeometry();
@@ -66,11 +56,9 @@ class Player {
         geometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
         var material = new THREE.ShaderMaterial( {
             uniforms: {
-                frameTexture: {type: "t", value: this.texture}
+                frameTexture: {type: "t", value: this.frameTexture}
             },
-            attributes: {
-
-            },
+            attributes: {},
             vertexShader: document.getElementById( 'vs' ).textContent,
             fragmentShader: document.getElementById( 'fs' ).textContent
         } );
@@ -78,7 +66,7 @@ class Player {
         this.scene.add(this.screenMesh);
     }
     _update() {
-        this.texture.needsUpdate = true;
+        this.frameTexture.needsUpdate = true;
     }
     _render() {
         this.loopId = requestAnimationFrame(this._render.bind(this));
@@ -90,15 +78,24 @@ class Player {
 class PlayerView extends React.Component {
     constructor(props) {
         super(props);
-        this.player = new Player();
+        this.state = {width: 480, height: 320}
     }
     componentDidMount() {
-        this.player.initScreen(React.findDOMNode(this.refs.screen), this.props.width, this.props.height);
-        //this.player.play();
+        this.player = new Player(React.findDOMNode(this.refs.input), React.findDOMNode(this.refs.output));
+        this.player.play('./test/test.mp4');
     }
     render() {
-        return <div ref="wrapper" width={this.props.width} height={this.props.height}>
-            <canvas ref="screen" width={this.props.width} height={this.props.height} style={{backgroundColor: "black"}}></canvas>
+        return <div id="player-wrapper" ref="wrapper" >
+            <div className="relative screen-wrapper">
+                <span className="screenLabel">Input</span>
+                <video id="input" className="screen z-depth-3" ref="input"
+                       width={this.state.width} height={this.state.height} style={{backgroundColor: "black"}}></video>
+            </div>
+            <div className="relative screen-wrapper">
+                <span className="screenLabel">Output</span>
+                <canvas id="output" className="screen z-depth-3" ref="output"
+                        width={this.state.width} height={this.state.height} style={{backgroundColor: "black"}}></canvas>
+            </div>
         </div>
     }
 }

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Player</title>
+
     <script type="shader" id="vs">
         varying vec2 vpos;
         void main() {
@@ -31,8 +32,46 @@
     </script>
     <script src="../../../build/vendors.js"></script>
     <script src="../../../build/player.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+    <style>
+        .azure, .brand-logo.azure, .tabs .tab a.azure {
+            color: #4DBED7;
+        }
+        canvas, video {
+            border-radius: 5px;
+        }
+        .nav-wrapper {
+            background-color: white;
+            border-bottom: 3px solid #4DBED7;
+        }
+        #player-wrapper {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-around;
+        }
+        #player-wrapper .screen-wrapper {
+
+        }
+        .relative {
+            position: relative;
+        }
+        .inline {
+            display: inline-block;
+        }
+        .screenLabel {
+            position: absolute;
+            color:  white;
+            top: 2px;
+            left: 2px;
+        }
+
+
+        .tabs .indicator {
+            background-color: #4DBED7;
+        }
+    </style>
 </head>
 <body>
-d
 </body>
 </html>
