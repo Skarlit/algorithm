@@ -1,6 +1,8 @@
 import React from "react";
 import $ from "jquery";
-import Player from "./player.js"
+import Player from "./player.js";
+import Video from "./video.js";
+import VideoPanel from "./video_panel.js";
 
 window.$ = $;
 window.jQuery = $;
@@ -16,7 +18,7 @@ class App extends React.Component {
     videoMode() {this.setState({videoMode: true})}
     audioMode() {this.setState({videoMode: false})}
     render() {
-        var tabContent = this.state.videoMode ? <div>Video</div> : <div>Audio</div>;
+        var tabContent = this.state.videoMode ? <VideoPanel /> : <div>Audio</div>;
         return <div  className="row">
             <nav>
                 <div className="nav-wrapper">

@@ -34,6 +34,7 @@
     <script src="../../../build/player.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="./css/monokai.css">
     <style>
         .azure, .brand-logo.azure, .tabs .tab a.azure {
             color: #4DBED7;
@@ -43,7 +44,7 @@
         }
         .nav-wrapper {
             background-color: white;
-            border-bottom: 3px solid #4DBED7;
+            border-bottom: 1px solid #4DBED7;
         }
         #player-wrapper {
             display: flex;
@@ -70,6 +71,38 @@
         .tabs .indicator {
             background-color: #4DBED7;
         }
+
+        .video-edit {
+            position: relative;
+            display: flex;
+            flex-wrap: nowrap;
+            width: 100%;
+            justify-content: space-around;
+        }
+        #vs-edit, #fs-edit {
+            position: relative;
+            margin: 50px 15px;
+            border-radius: 5px;
+            border: 1px solid #4DBED7;
+        }
+
+        #vs-edit:before {
+            content: "Vertex Shader";
+        }
+
+        #fs-edit:before {
+            content: "Fragment Shader";
+        }
+
+        #vs-edit:before, #fs-edit:before {
+            color: #4DBED7;
+            position: absolute;
+            line-height: 25px;
+            top: -25px;
+            left: 5px;
+        }
+
+
     </style>
 </head>
 <body>
