@@ -53,7 +53,6 @@ class Video extends React.Component {
                     onChange={function() {}}
                     name="VS_SHADER"
                     value={this.state.vs}
-                    width="450"
                     showPrintMargin = {false}
                     highlightActiveLine={true}
                     showGutter={false}
@@ -66,7 +65,6 @@ class Video extends React.Component {
                     theme="monokai"
                     onChange={function() {}}
                     name="FS_SHADER"
-                    width="450"
                     value={this.state.fs}
                     showPrintMargin = {false}
                     showGutter={false}
