@@ -1,0 +1,15 @@
+{
+  "name": "split-string",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --harmony test.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel": "^6.3.26",
+    "babel-cli": "^6.4.5"
+  }
+}

@@ -40,6 +40,9 @@ class Node {
 
    }
    shouldSplit() {
+      return this.children.length > this.splitSize;
+   }
+   shouldMerge() {
 
    }
 }
@@ -59,6 +62,9 @@ class InternalNode extends Node {
       }
       return null;
    }
+   insert(reduced_idx, val) {
+
+   }
    _push(val) {
       this.childrenSize[this.childrenSize.length - 1] = this.children._push(val);
       return this.getNodeSize();
@@ -77,9 +83,16 @@ class Leaf extends Node {
       this.children[reduced_idx] = val;
       return true;
    }
+   insert(reduced_idx, val) {
+      // push val
+      // check if should split
+      // if so
+          // create new leaf, transfer element
+          // if parent, set parent,
+   }
    _push(val) {
       this.children.push(val);
-      this.shouldSplit();
+      if (!this.shouldSplit()) return 1;
    }
    getNodeSize() {
       return this.children.length;
