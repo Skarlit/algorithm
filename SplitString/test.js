@@ -1,7 +1,7 @@
 var Tokenizer = require('./tokenizer');
 var fs = require('fs');
 
-var sampleText = 'iamyourfather';
+var sampleText = 'iamyourtaylorswift';
 
 fs.readFile('./words', 'utf8', function(err, data) {
     var wordArray = data.split(/\r?\n/);

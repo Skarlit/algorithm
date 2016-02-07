@@ -11,16 +11,24 @@ class Tokenizer {
             };
         }
     }
+    useFreq(freq) {
+        for(var key in freq) {
+            var prob = parseFloat(freq[key]);
+            if (key.length == 1 && (key != 'a' || key != 'i')) {
+                prob = 0.00000000001;
+            }
+            this.wordFreq[key] = {p:  prob, s: [key]};
+        }
+    }
     tokenize(string) {
         var r = this._solver(string);
-        console.log(r);
         return r;
     }
     _solver(string) {
         if (this.wordFreq[string]) {
             return this.wordFreq[string];
         } else if (string.length < 2) {
-            return {p: 1/ (1000*this.n), s: [string]};
+            return {p: 0.00000000001, s: [string]};
         } else {
             var maxProb = -Infinity;
             var maxr1 = null;

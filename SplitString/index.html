@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300' rel='stylesheet' type='text/css'>
+    <link href="../../../stylesheets/thirdparty/metro.min.css" rel="stylesheet" type="text/css">
+    <script src="../../../build/vendors.js"></script>
+    <script src="../../thirdparty/metro.min.js"></script>
+    <script src="../../../build/wordsplit.js"></script>
+</head>
+<body>
+<style>
+    body{
+        padding-top: 50px;
+        color: #ccc;
+    }
+    h4, h5 {
+        font-size: 24px;
+        text-align: center;
+    }
+    #input{
+        padding: 5px 15px;
+        display: block;
+        position: relative;
+        margin: 20px auto;
+        resize: none;
+        width: 400px;
+        height: 150px;
+        font-size: 16px;
+        color: #ccc;
+        background-color: rgba(0,0,0,0);
+        border-radius: 12px;
+        border: 1px solid #ccc;
+    }
+    #desc {
+        font-size: 14px;
+        width:  400px;
+        padding: 0 16px;
+        margin: 18px auto;
+        text-align: center;
+    }
+    #output {
+        width:  560px;
+        margin: 40px auto;
+        padding: 10px 20px;
+        text-align: left;
+        font-size: 20px;
+    }
+    textarea:focus {
+        outline: none;
+    }
+    #convert {
+        border-radius: 4px;
+        padding: 4px 8px;
+        border: 1px solid #ccc;
+        margin: 20px auto;
+        text-align: center;
+        color: #ccc;
+        display: block;
+        width: 150px;
+        height: 50px;
+        font-size: 26px;
+        line-height: 36px;
+    }
+</style>
+    <h4>Enter string with no space.</h4>
+    <h4 id="desc">
+        This uses dynamic programming picking the segmentation with max probability (max likelihood). <br/>
+        This model is very primitive as it assumes segment independent of previous and
+        not bayesian makes it bias towards common words.
+    </h4>
+    <textarea id="input" disabled></textarea>
+    <a id='convert' href="javascript://">Convert!</a>
+    <p id="output"></p>
+</body>
+</html>
